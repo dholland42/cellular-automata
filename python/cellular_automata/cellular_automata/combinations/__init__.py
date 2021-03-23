@@ -1,3 +1,3 @@
-from .combinations import CombinationsCA
+from .combinations import transition
 
-__all__ = ['CombinationsCA']
+__all__ = ['transition']

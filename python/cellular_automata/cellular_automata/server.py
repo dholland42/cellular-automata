@@ -1,25 +1,22 @@
+import click
 from flask import Flask, jsonify, request
 
-from cellular_automata.combinations import CombinationsCA
+from cellular_automata.combinations import transition
 
 app = Flask(__name__)
-
-CA = CombinationsCA()
 
 
 @app.route("/", methods=["POST"])
 def serve():
-    state = CA.value
-    CA.step()
-    return jsonify({"state": state})
-
-
-@app.route("/reset", methods=["POST"])
-def reset():
     data = request.json
-    CA.reset(state=data.get("state"))
-    return jsonify({"state": CA.value})
+    return jsonify({"state": transition(data.get("state"))})
 
+
+@click.command()
+@click.option("--host", default="localhost")
+@click.option("--port", default=5000)
+def main(host, port):
+    app.run(host=host, port=port)
 
 if __name__ == "__main__":
-    app.run()
+    main()

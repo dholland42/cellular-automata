@@ -1,57 +1,31 @@
-from typing import List
+from typing import List, Iterable
+
+import itertools
 
 
-class CombinationsCA:
-    def __init__(self, initial_state: List[int] = [0 if r != 5 else 1 for r in range(11)]) -> None:
-        self.initial_state = initial_state
-        self.cells = [CombinationCell(i) for i in initial_state]
-        for c1, c2 in zip(self.cells[:-1], self.cells[1:]):
-            c1.neighbors.append(c2)
-            c2.neighbors.append(c1)
+def zpad(state: List[int]) -> List[int]:
+    return [0] + list(state) + [0]
 
-    def step(self) -> "CombinationsCA":
-        newvals = [cell.transition() for cell in self.cells]
-        for cell, value in zip(self.cells, newvals):
-            cell.value = value
-        return self
+def sliding_window(iterable: Iterable, n: int = 2) -> Iterable:
+    iterables = itertools.tee(iterable, n)
+    for iterable, num_skipped in zip(iterables, itertools.count()):
+        for _ in range(num_skipped):
+            next(iterable, None)
+    return zip(*iterables)
 
-    def reset(self, state=None) -> None:
-        if state:
-            self.cells = [CombinationCell(i) for i in state]
-            for c1, c2 in zip(self.cells[:-1], self.cells[1:]):
-                c1.neighbors.append(c2)
-                c2.neighbors.append(c1)
-
-        for cell in self.cells:
-            cell.reset()
-
-    @property
-    def value(self) -> List[int]:
-        return [cell.value for cell in self.cells]
-
-    def __repr__(self) -> str:
-        return str(self.value)
-
-    def run(self, num_steps: int = 20) -> List[List[int]]:
-        for _ in range(num_steps):
-            yield self.step().value
-
-
-class CombinationCell:
-    def __init__(self, initial_value: int = 0) -> None:
-        self.value = self.initial_value = initial_value
-        self.neighbors = list()
-
-    def transition(self) -> int:
-        if sum(cell.value for cell in self.neighbors) == 1:
-            return 1
-        return 0
-
-    def reset(self) -> None:
-        self.value = self.initial_value
+def transition(state: List[int]) -> List[int]:
+    newstate = list()
+    for batch in sliding_window(zpad(state), 3):
+        if batch[0] + batch[-1] == 1:
+            newstate.append(1)
+        else:
+            newstate.append(0)
+    return newstate
 
 
 if __name__ == "__main__":
-    ca = CombinationsCA()
-    for row in ca.run():
-        print(row)
+    state = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    print(state)
+    for _ in range(20):
+        state = transition(state)
+        print(state)
