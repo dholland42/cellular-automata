@@ -1,7 +1,7 @@
 import click
 from flask import Flask, jsonify, request
 
-from cellular_automata.combinations import transition
+from cellular_automata.ca import transition
 
 app = Flask(__name__)
 
@@ -10,6 +10,12 @@ app = Flask(__name__)
 def serve():
     data = request.json
     return jsonify({"state": transition(data.get("state"))})
+
+
+@app.route("/<rule>", methods=["POST"])
+def serve_rule(rule):
+    data = request.json
+    return jsonify({"state": transition(data.get("state"), rule=int(rule))})
 
 
 @click.command()
