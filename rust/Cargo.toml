@@ -1,0 +1,9 @@
+[package]
+name = "dhtestingapp"
+version = "0.1.0"
+authors = ["Daniel Holland <danielholland414@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+itertools = "0.10.0"
+
