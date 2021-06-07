@@ -1,16 +1,34 @@
-// Just a simple starting point where we evolve
-// an initial state 10 times accordint to rule 32
+// Just a simple web server that evolves a state
 
 mod ca;
+mod models;
 
-fn main() {
-    // set up our initial state
-    let mut state: Vec<u32> = Vec::new() ;
-    state.extend([0, 0, 0, 1, 0, 0, 0, 0].iter().copied());
-    // evolve 10 times and print to stdout
-    println!("{:?}", state);
-    for _ in 0..10 {
-        state = ca::evolve(state, 32);
-        println!("{:?}", state);
-    }
+use crate::ca::{evolve};
+use crate::models::{State};
+
+use actix_web::{post, web, middleware, App, HttpResponse, HttpServer, Responder};
+use env_logger;
+
+
+#[post("/")]
+async fn index(info: web::Json<State>) -> impl Responder {
+    HttpResponse::Ok()
+    .json(State {
+        state: evolve(info.state.clone(), info.rule),
+        rule: info.rule,
+    })
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    std::env::set_var("RUST_LOG", "actix_web=debug");
+    env_logger::init();
+    HttpServer::new(|| {
+        App::new()
+            .wrap(middleware::Logger::default())
+            .service(index)
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
 }

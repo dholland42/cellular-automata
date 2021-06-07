@@ -6,4 +6,6 @@ edition = "2018"
 
 [dependencies]
 itertools = "0.10.0"
-
+actix-web = "3"
+serde = "1"
+env_logger = "0.8.3"
