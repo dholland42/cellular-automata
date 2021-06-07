@@ -1,0 +1,1 @@
+# 1D Cellular Automata in Rust
