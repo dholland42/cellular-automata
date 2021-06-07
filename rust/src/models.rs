@@ -1,5 +1,6 @@
-use serde::{Serialize, Deserialize};
+// Data models
 
+use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct State {
