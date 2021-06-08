@@ -5,14 +5,14 @@ use itertools;
 
 /// Convert an unsigned integer to binary.
 fn to_bin(num: u32) -> Vec<u32> {
-    let formatted = format!("{:b}", num);
+    let formatted = format!("{:08b}", num);
     let chars: Vec<u32> = formatted.chars().map(|c| c.to_digit(10).unwrap()).collect();
     return chars
 }
 
 /// Return all possible combinations of 3 consecutive cells.
 fn get_rules() -> Vec<(u32, u32, u32)> {
-    let options = itertools::iproduct!(0..2, 0..2, 0..2);
+    let options = itertools::iproduct!((0..2).rev(), (0..2).rev(), (0..2).rev());
     let options: Vec<(u32, u32, u32)> = options.collect();
     return options
 }
