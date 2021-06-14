@@ -1,0 +1,12 @@
+{
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context" : "..",
+        "target": "dev"
+    },
+    "extensions": [
+        "rust-lang.rust"
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder}/..,target=/usr/src/myapp,type=bind,consistency=cached",
+    "workspaceFolder": "/usr/src/myapp/rust"
+}

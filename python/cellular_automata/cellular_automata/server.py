@@ -9,13 +9,7 @@ app = Flask(__name__)
 @app.route("/", methods=["POST"])
 def serve():
     data = request.json
-    return jsonify({"state": transition(data.get("state"))})
-
-
-@app.route("/<rule>", methods=["POST"])
-def serve_rule(rule):
-    data = request.json
-    return jsonify({"state": transition(data.get("state"), rule=int(rule))})
+    return jsonify({"state": transition(data.get("state"), int(data.get("rule", "30")))})
 
 
 @click.command()
