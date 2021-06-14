@@ -14,7 +14,7 @@ use env_logger;
 async fn index(info: web::Json<State>) -> impl Responder {
     HttpResponse::Ok()
     .json(State {
-        state: evolve(info.state.clone(), info.rule),
+        state: evolve(&info.state, &info.rule),
         rule: info.rule,
     })
 }
@@ -32,3 +32,13 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
+
+// fn dothing(&x: &u32) -> u32  {
+//     println!("{}", x);
+//     x
+// }
+
+// fn main() {
+//     let x = 10;
+//     dothing(&x);
+// }
