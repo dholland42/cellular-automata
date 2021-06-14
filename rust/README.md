@@ -6,6 +6,20 @@ evolving cell states lives in `src/ca.rs`, while the web server logic
 lives in the main file - `main.rs`. The `models.rs` file simply implements
 the `State` struct which we expect to receive from POST requests.
 
+## Usage
+1. Build the docker image:
+```
+docker build -t ca-rust .
+```
+2. Run the container
+```
+docker run --rm -d -p 8080:8080 ca-rust
+```
+3. Check that everything runs
+```
+curl -X POST -H 'Content-Type: application/json' -d "{\"state\": [0, 1, 1, 0, 0], \"rule\": 30}" localhost:8080
+```
+
 ## VSCode Stuff
 This code is set up for ease of use with VSCode using development containers.
 To get up an running quickly, get VSCode and install the remote-containers
@@ -23,4 +37,4 @@ we could need - an ubuntu-based OS, Rust, cargo, and all that jazz. However,
 with Rust we are able to compile to a static binary using `musl`. This will
 allow our binary to run in the extremely minimal `scratch` docker image, which
 we will use as a production base. This means that our final production docker
-image size is aroung 10MB.
+image size is only around 10MB in size.
