@@ -23,6 +23,14 @@ RUN cargo build --release --target=x86_64-unknown-linux-musl
 RUN rm -f target/release/deps/dhtestingapp*
 
 # ------------------------------------------------------------------------------
+# dev build
+# ------------------------------------------------------------------------------
+FROM base as dev
+RUN rustup component add rust-src --toolchain 1.52.1-x86_64-unknown-linux-gnu
+RUN rustup component add rls --toolchain 1.52.1-x86_64-unknown-linux-gnu
+RUN rustup component add rust-analysis --toolchain 1.52.1-x86_64-unknown-linux-gnu
+
+# ------------------------------------------------------------------------------
 # prod build
 # ------------------------------------------------------------------------------
 

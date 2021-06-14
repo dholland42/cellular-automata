@@ -32,13 +32,3 @@ async fn main() -> std::io::Result<()> {
     .run()
     .await
 }
-
-// fn dothing(&x: &u32) -> u32  {
-//     println!("{}", x);
-//     x
-// }
-
-// fn main() {
-//     let x = 10;
-//     dothing(&x);
-// }

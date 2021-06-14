@@ -2,7 +2,7 @@
     "build": {
         "dockerfile": "../Dockerfile",
         "context" : "..",
-        "target": "base"
+        "target": "dev"
     },
     "extensions": [
         "rust-lang.rust"
