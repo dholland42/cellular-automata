@@ -2,7 +2,7 @@
 # base with deps installed
 # ------------------------------------------------------------------------------
 
-FROM rust:latest as base
+FROM rust:1.52.1 as base
 
 WORKDIR /usr/src/myapp
 
@@ -29,6 +29,8 @@ FROM base as dev
 RUN rustup component add rust-src --toolchain 1.52.1-x86_64-unknown-linux-gnu
 RUN rustup component add rls --toolchain 1.52.1-x86_64-unknown-linux-gnu
 RUN rustup component add rust-analysis --toolchain 1.52.1-x86_64-unknown-linux-gnu
+RUN apt-get update && apt install -y linux-perf && rm /usr/bin/perf && ln -s /usr/bin/perf* /usr/bin/perf
+RUN cargo install flamegraph
 
 # ------------------------------------------------------------------------------
 # prod build

@@ -3,7 +3,7 @@
 mod ca;
 mod models;
 
-use crate::ca::{evolve};
+use crate::ca::{get_all_mappings};
 use crate::models::{State};
 
 use actix_web::{post, web, middleware, App, HttpResponse, HttpServer, Responder};
@@ -11,10 +11,10 @@ use env_logger;
 
 
 #[post("/")]
-async fn index(info: web::Json<State>) -> impl Responder {
+async fn index(data: web::Data<ca::Rules>, info: web::Json<State>) -> impl Responder {
     HttpResponse::Ok()
     .json(State {
-        state: evolve(&info.state, &info.rule),
+        state: data.evolve(&info.state, &info.rule),
         rule: info.rule,
     })
 }
@@ -25,6 +25,7 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
     HttpServer::new(|| {
         App::new()
+            .data(ca::Rules{rules: get_all_mappings()})
             .wrap(middleware::Logger::default())
             .service(index)
     })

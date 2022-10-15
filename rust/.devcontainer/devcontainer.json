@@ -4,6 +4,10 @@
         "context" : "..",
         "target": "dev"
     },
+    // uncomment the below lines when needing to run `perf` for profiling
+    // "runArgs": [
+    //     "--cap-add=SYS_ADMIN"
+    // ],
     "extensions": [
         "rust-lang.rust"
     ],
